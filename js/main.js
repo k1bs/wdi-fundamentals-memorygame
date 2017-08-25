@@ -29,18 +29,41 @@ var checkForMatch = function() {
       alert("Sorry, try again.");
   	};
 };
-var flipCard = function(cardId) {
+
+var flipCard = function() {
+	var cardId = this.getAttribute('data-id');
 	console.log("User flipped over a " + cards[cardId].rank);
 	console.log(cards[cardId].suit);
 	console.log(cards[cardId].cardImage);
 	cardsInPlay.push(cards[cardId].rank);
+	this.setAttribute('src', cards[cardId].cardImage)
 	if (cardsInPlay.length === 2) {
 		checkForMatch();
 	};
 };
 
-flipCard(0);
-flipCard(2);
+var createBoard = function() {
+	for (var i = 0; i < cards.length; i++) {
+		var cardElement = document.createElement('img');
+		cardElement.setAttribute('src', 'images/back.png');
+		cardElement.setAttribute('data-id', i);
+		cardElement.addEventListener('click', flipCard);
+		document.getElementById('game-board').appendChild(cardElement);
+		var buttonElement = document.getElementById('reset');
+		buttonElement.addEventListener('click', resetBoard)
+  	};
+};
+
+var resetBoard = function() {
+	for (var i = 0; i < cards.length; i++) {
+		var cardToBeReset = document.getElementsByTagName('img')[i];
+		cardToBeReset.setAttribute('src', 'images/back.png')
+		cardsInPlay.pop();
+		console.log(cardsInPlay);
+	};
+};
+
+createBoard();
 
 // console.log("User flipped " + cardOne);
 // console.log("User flipped " + cardFour);
